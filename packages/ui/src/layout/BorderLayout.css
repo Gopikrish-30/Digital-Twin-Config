@@ -1,0 +1,98 @@
+.dt-border-layout {
+  /* Viewport units, not %, so this shell doesn't depend on every ancestor
+     (html/body/#root) having an explicit height in its own chain — it's
+     always meant to be the full-window app shell. */
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dt-border-layout__north {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--dt-border);
+  background: var(--dt-bg-2);
+  flex-shrink: 0;
+}
+
+.dt-border-layout__south {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--dt-border);
+  background: var(--dt-bg-2);
+  flex-shrink: 0;
+}
+
+.dt-border-layout__middle {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.dt-border-layout__west,
+.dt-border-layout__east {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-shrink: 0;
+  background: var(--dt-bg-1);
+  transition: margin 0.2s ease;
+}
+
+.dt-border-layout__west {
+  border-right: 1px solid var(--dt-border);
+}
+
+.dt-border-layout__east {
+  border-left: 1px solid var(--dt-border);
+}
+
+.dt-border-layout__west.dt-collapsed {
+  margin-left: calc(-1 * var(--dt-region-width, 260px));
+}
+
+.dt-border-layout__east.dt-collapsed {
+  margin-right: calc(-1 * var(--dt-region-width, 260px));
+}
+
+.dt-border-layout__panel-content {
+  width: var(--dt-region-width, 260px);
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.dt-border-layout__handle {
+  flex-shrink: 0;
+  width: var(--dt-region-handle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--dt-text-dim);
+  background: var(--dt-bg-2);
+}
+
+.dt-border-layout__handle:hover {
+  background: var(--dt-bg-3);
+  color: var(--dt-text);
+}
+
+.dt-border-layout__west .dt-border-layout__handle {
+  border-left: 1px solid var(--dt-border);
+}
+
+.dt-border-layout__east .dt-border-layout__handle {
+  border-right: 1px solid var(--dt-border);
+}
+
+.dt-border-layout__center {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  background: var(--dt-bg-0);
+}

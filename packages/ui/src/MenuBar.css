@@ -1,0 +1,31 @@
+.dt-menu-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 34px;
+  padding: 0 4px;
+  gap: 2px;
+  background: var(--dt-bg-2);
+  border-bottom: 1px solid var(--dt-border);
+}
+
+.dt-menu-bar__item {
+  padding: 4px 10px;
+  border-radius: var(--dt-radius);
+  color: var(--dt-text-dim);
+  font-size: 12px;
+  cursor: default;
+}
+
+.dt-menu-bar__item:hover {
+  background: var(--dt-bg-3);
+  color: var(--dt-text);
+}
+
+.dt-menu-bar__title {
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dt-text);
+  margin-right: 8px;
+}

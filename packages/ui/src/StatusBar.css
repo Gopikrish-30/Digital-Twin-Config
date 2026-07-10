@@ -1,0 +1,11 @@
+.dt-status-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+  padding: 0 10px;
+  font-size: 11px;
+  color: var(--dt-text-dim);
+  background: var(--dt-bg-2);
+}

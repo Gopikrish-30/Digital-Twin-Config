@@ -1,0 +1,9 @@
+/* Viewport gradient so the area above the horizon reads as "sky", not a broken
+   blank void — subtle lighter band near the horizon fading darker top/bottom,
+   the same trick Blender's default viewport background uses. The Canvas itself
+   renders transparent (gl alpha:true) so this shows through behind the grid. */
+.dt-viewport {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #1d1f24 0%, #2d3138 58%, #1b1d21 100%);
+}

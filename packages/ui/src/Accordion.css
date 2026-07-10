@@ -1,0 +1,39 @@
+.dt-accordion-section {
+  border-bottom: 1px solid var(--dt-border);
+}
+
+.dt-accordion-section__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--dt-bg-2);
+  border: none;
+  color: var(--dt-text);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dt-accordion-section__header:hover {
+  background: var(--dt-bg-3);
+}
+
+.dt-accordion-section__caret {
+  display: inline-block;
+  transition: transform 0.15s ease;
+  color: var(--dt-text-dim);
+  font-size: 10px;
+}
+
+.dt-accordion-section__caret.dt-open {
+  transform: rotate(90deg);
+}
+
+.dt-accordion-section__body {
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--dt-text);
+}

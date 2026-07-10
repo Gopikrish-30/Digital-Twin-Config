@@ -1,0 +1,13 @@
+{
+  "name": "digital-twin-platform",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.30.3",
+  "scripts": {
+    "configurator:dev": "pnpm --filter configurator tauri dev",
+    "configurator:build": "pnpm --filter configurator tauri build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}

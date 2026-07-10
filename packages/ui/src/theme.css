@@ -1,0 +1,19 @@
+/* Dark editor theme — dockable-tool look (Blender/ShadowEditor-inspired panel structure, see NOTICE.md). */
+:root {
+  --dt-bg-0: #1b1d21; /* viewport / deepest background */
+  --dt-bg-1: #232529; /* panels */
+  --dt-bg-2: #2b2e33; /* panel headers, toolbar */
+  --dt-bg-3: #34373d; /* hover */
+  --dt-border: #3a3d43;
+  --dt-text: #e4e6eb;
+  --dt-text-dim: #9a9ea6;
+  --dt-accent: #5b8def;
+  --dt-accent-dim: #3a5a99;
+  --dt-radius: 3px;
+  --dt-region-handle: 10px;
+}
+
+body {
+  background: var(--dt-bg-0);
+  color: var(--dt-text);
+}

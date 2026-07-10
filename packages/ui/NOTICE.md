@@ -1,0 +1,3 @@
+The dockable editor layout in this package (`BorderLayout` region model: collapsible north/south/west/east regions around a center viewport, plus the overall panel/accordion/toolbar/menu-bar composition style) was designed after studying [tengge1/ShadowEditor](https://github.com/tengge1/ShadowEditor) (MIT License), specifically its `web/src/ui/layout/BorderLayout.jsx` and `web/src/editor/Editor.jsx`.
+
+No code was copied — everything here is a fresh TypeScript/function-component implementation — but the layout region model and panel arrangement are deliberately the same pattern, so it's credited per the spirit of MIT attribution.

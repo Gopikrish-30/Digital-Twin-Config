@@ -1,0 +1,41 @@
+.dt-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--dt-border);
+  background: var(--dt-bg-2);
+}
+
+.dt-toolbar__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: var(--dt-radius);
+  background: transparent;
+  color: var(--dt-text);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.dt-toolbar__button:hover {
+  background: var(--dt-bg-3);
+}
+
+.dt-toolbar__button.dt-active {
+  background: var(--dt-accent-dim);
+  border-color: var(--dt-accent);
+  color: #fff;
+}
+
+.dt-toolbar__separator {
+  width: 1px;
+  align-self: stretch;
+  margin: 4px 6px;
+  background: var(--dt-border);
+}
