@@ -1,0 +1,19 @@
+{
+    "name": "shadow-editor-desktop",
+    "version": "0.0.1",
+    "description": "Cross-platform 3D scene editor based on three.js, golang and mongodb.",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tengge1/ShadowEditor.git"
+    },
+    "author": "tengge",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/tengge1/ShadowEditor/issues"
+    },
+    "homepage": "https://github.com/tengge1/ShadowEditor#readme"
+}

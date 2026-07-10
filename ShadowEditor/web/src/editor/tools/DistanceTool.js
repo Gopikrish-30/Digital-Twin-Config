@@ -1,0 +1,184 @@
+/*
+ * Copyright 2017-2020 The ShadowEditor Authors. All rights reserved.
+ *
+ * Use of this source code is governed by a MIT-style
+ * license that can be found in the LICENSE file.
+ * 
+ * For more information, please visit: https://github.com/tengge1/ShadowEditor
+ * You can also visit: https://gitee.com/tengge1/ShadowEditor
+ */
+import BaseTool from './BaseTool';
+import UnscaledText from '../../object/text/UnscaledText';
+import global from '../../global';
+
+/**
+ * 距离测量工具
+ */
+class DistanceTool extends BaseTool {
+    constructor() {
+        super();
+
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onGpuPick = this.onGpuPick.bind(this);
+        this.onDblClick = this.onDblClick.bind(this);
+    }
+
+    start() {
+        if (!this.init) {
+            this.init = true;
+            this.positions = [];
+            this.lines = [];
+            this.world = new THREE.Vector3();
+
+            global.app.require('line').then(() => {
+                global.app.on(`mousedown.${this.id}`, this.onMouseDown);
+                global.app.on(`gpuPick.${this.id}`, this.onGpuPick);
+                global.app.on(`dblclick.${this.id}`, this.onDblClick);
+                global.app.on(`clearTools.${this.id}`, this.handleClearTools.bind(this));
+            });
+        } else {
+            this.positions.length = 0;
+            global.app.on(`mousedown.${this.id}`, this.onMouseDown);
+            global.app.on(`gpuPick.${this.id}`, this.onGpuPick);
+            global.app.on(`dblclick.${this.id}`, this.onDblClick);
+        }
+        global.app.editor.gpuPickNum++;
+    }
+
+    stop() {
+        global.app.editor.gpuPickNum--;
+        global.app.on(`mousedown.${this.id}`, null);
+        global.app.on(`gpuPick.${this.id}`, null);
+        global.app.on(`dblclick.${this.id}`, null);
+
+        this.positions.length = 0;
+        delete this.line;
+    }
+
+    clear() {
+        while (this.lines.length) {
+            const line = this.lines[0];
+            const texts = line.texts;
+            while(texts.length) {
+                global.app.editor.sceneHelpers.remove(texts[0]);
+                texts.splice(0, 1);
+            }
+            global.app.editor.sceneHelpers.remove(line);
+            this.lines.splice(0, 1);
+        }
+    }
+
+    onMouseDown() {
+        if (!this.line) {
+            let { width, height } = global.app.editor.renderer.domElement;
+            let geometry1 = new THREE.LineGeometry();
+            let material = new THREE.LineMaterial({
+                color: 0xffff00,
+                linewidth: 4,
+                resolution: new THREE.Vector2(width, height)
+            });
+            this.line = new THREE.Line2(geometry1, material);
+            this.line.texts = [];
+            this.lines.push(this.line);
+            global.app.editor.sceneHelpers.add(this.line);
+        }
+
+        if (this.positions.length === 0) {
+            this.positions.push(this.world.x, this.world.y, this.world.z);
+            this.positions.push(this.world.x, this.world.y, this.world.z);
+        } else {
+            this.positions.push(this.world.x, this.world.y, this.world.z);
+        }
+
+        this.update();
+    }
+
+    onGpuPick(obj) {
+        if (!obj.point) {
+            return;
+        }
+
+        this.world.copy(obj.point);
+
+        if (this.positions.length === 0) {
+            return;
+        }
+
+        this.positions.splice(this.positions.length - 3, 3);
+        this.positions.push(this.world.x, this.world.y, this.world.z);
+
+        this.update();
+    }
+
+    update() {
+        let geometry = this.line.geometry;
+        geometry.setPositions(this.positions);
+        geometry.maxInstancedCount = this.positions.length / 3 - 1;
+
+        let dist = 0;
+
+        for (let i = 3; i < this.positions.length; i += 3) {
+            dist += Math.sqrt(
+                (this.positions[i] - this.positions[i - 3]) ** 2 +
+                (this.positions[i + 1] - this.positions[i - 2]) ** 2 +
+                (this.positions[i + 2] - this.positions[i - 1]) ** 2
+            );
+        }
+
+        dist = dist.toFixed(2);
+
+        let domElement = global.app.editor.renderer.domElement;
+
+        if (this.positions.length === 6 && this.line.texts.length === 0) { // 前两个点
+            let text1 = new UnscaledText(_t('Start Point'), {
+                domWidth: domElement.width,
+                domHeight: domElement.height
+            });
+            this.offsetText(text1);
+            text1.position.fromArray(this.positions);
+            let text2 = new UnscaledText(_t('{{dist}}m', { dist: 0 }), {
+                domWidth: domElement.width,
+                domHeight: domElement.height
+            });
+            this.offsetText(text2);
+            text2.position.fromArray(this.positions, 3);
+            this.line.texts.push(text1, text2);
+            global.app.editor.sceneHelpers.add(text1);
+            global.app.editor.sceneHelpers.add(text2);
+        } else if (this.line.texts.length < this.positions.length / 3) { // 增加点了
+            let text1 = new UnscaledText(_t('{{dist}}m', { dist }), {
+                domWidth: domElement.width,
+                domHeight: domElement.height
+            });
+            this.offsetText(text1);
+            text1.position.fromArray(this.positions, this.positions.length - 3);
+            this.line.texts.push(text1);
+            global.app.editor.sceneHelpers.add(text1);
+        } else { // 更新最后一个点坐标
+            let text1 = this.line.texts[this.line.texts.length - 1];
+            this.offsetText(text1);
+            text1.position.fromArray(this.positions, this.positions.length - 3);
+            text1.setText(_t('{{dist}}m', { dist }));
+        }
+    }
+
+    offsetText(text) {
+        // 避免文字被遮挡
+        text.material.depthTest = false;
+        // text.material.polygonOffset = true;
+        // text.material.polygonOffsetFactor = -10;
+        // text.material.polygonOffsetUnits = -10;
+    }
+
+    onDblClick() {
+        this.stop();
+        this.call(`end`, this);
+    }
+
+    handleClearTools() {
+        this.clear();
+        this.stop();
+    }
+}
+
+export default DistanceTool;
